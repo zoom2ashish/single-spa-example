@@ -1,0 +1,100 @@
+{
+  "name": "vanillajs-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/vanillajs-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-builders/custom-webpack:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/vanillajs-app",
+        "index": "apps/vanillajs-app/src/index.html",
+        "main": "apps/vanillajs-app/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/vanillajs-app/tsconfig.app.json",
+        "assets": ["apps/vanillajs-app/src/favicon.ico", "apps/vanillajs-app/src/assets"],
+        "styles": ["apps/vanillajs-app/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/vanillajs-app/extra-webpack.config.ts",
+          "replaceDuplicatePlugins": true
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "none"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-builders/custom-webpack:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "vanillajs-app:build:production"
+        },
+        "development": {
+          "browserTarget": "vanillajs-app:build:development",
+          "port": 4201
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "vanillajs-app:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/vanillajs-app/**/*.ts", "apps/vanillajs-app/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/vanillajs-app/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "vanillajs-app:build"
+      }
+    }
+  }
+}
