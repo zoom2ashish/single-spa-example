@@ -3,5 +3,5 @@ declare module 'single-spa-html' {
 }
 
 interface Window {
-    angular-app: any;
+    app2: any;
 }

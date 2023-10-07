@@ -22,4 +22,4 @@ This example leverages the monorepo concept and uses NX to manage multiple appli
 - Start Shell application using following command
     ```npm run start:all```
 
-
+- Open browser and access url: http://localhost:4200
