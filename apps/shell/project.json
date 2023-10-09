@@ -15,9 +15,7 @@
         "outputPath": "dist/apps/shell",
         "index": "apps/shell/src/index.html",
         "main": "apps/shell/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/shell/tsconfig.app.json",
         "assets": [
           "apps/shell/src/favicon.ico",
@@ -64,7 +62,10 @@
         },
         "development": {
           "browserTarget": "shell:build:development",
-          "port": 4200
+          "port": 4200,
+          "liveReload": false,
+          "publicHost": "http://localhost:4200",
+          "proxyConfig": "apps/shell/proxy.conf.json"
         }
       },
       "defaultConfiguration": "development"

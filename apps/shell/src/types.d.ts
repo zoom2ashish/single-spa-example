@@ -4,5 +4,7 @@ declare module 'single-spa-html' {
 
 interface Window {
     app2: any;
+    app1: any;
+    vanillaJsApp: any;
     navigate: (string)  => void;
 }

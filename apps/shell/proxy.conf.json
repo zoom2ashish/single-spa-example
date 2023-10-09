@@ -1,0 +1,12 @@
+{
+    "/vanillaJs": {
+        "target": "http://localhost:4201",
+        "pathRewrite": {"^/vanillaJs" : ""},
+        "secure": false
+    },
+    "/angular": {
+        "target": "http://localhost:4202",
+        "pathRewrite": {"^/angular" : ""},
+        "secure": false
+    }
+}

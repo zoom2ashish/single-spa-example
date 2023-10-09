@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/vanillajs-app",
         "index": "apps/vanillajs-app/src/index.html",
         "main": "apps/vanillajs-app/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/vanillajs-app/tsconfig.app.json",
         "assets": ["apps/vanillajs-app/src/favicon.ico", "apps/vanillajs-app/src/assets"],
         "styles": ["apps/vanillajs-app/src/styles.scss"],
@@ -45,7 +45,8 @@
           "vendorChunk": false,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": false
+          "namedChunks": false,
+          "commonChunk": false
         }
       },
       "defaultConfiguration": "production"

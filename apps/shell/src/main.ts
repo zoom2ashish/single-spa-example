@@ -8,9 +8,32 @@ window.navigate = function (url: string) {
   navigateToUrl(url);
 }
 
+function loadScript(appName: string, url: string) {
+  return new Promise((resolve, reject) => {
+    if (document.getElementById(appName)) {
+      return resolve(true);
+    }
+
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.id = appName;
+    script.onload = resolve;
+    script.onerror = reject;
+
+    document.head.appendChild(script);
+  });
+}
+
+window.addEventListener('beforeunload', () => {
+  debugger;
+})
+
 registerApplication({
   name: 'app1',
-  app: () => import('../../vanillajs-app/src/main'),
+  app: () => loadScript('vanillajs-app-main', 'http://localhost:4201/main.js').then(() => {
+    return window['vanillaJsApp'];
+  }),
   activeWhen: (location) => {
     return (location.pathname === '/app1' || location.pathname === '/');
   }
@@ -29,22 +52,3 @@ platformBrowserDynamic(getSingleSpaExtraProviders()).bootstrapModule(AppModule).
 });
 
 
-//
-// Alternate way to load the app as UMD module which exports the library as a global variable
-//
-// function loadScript(appName: string, url: string) {
-//   return new Promise((resolve, reject) => {
-//     if (document.getElementById(appName)) {
-//       return resolve(true);
-//     }
-
-//     const script = document.createElement('script');
-//     script.src = url;
-//     script.async = true;
-//     script.id = appName;
-//     script.onload = resolve;
-//     script.onerror = reject;
-
-//     document.head.appendChild(script);
-//   });
-// }
