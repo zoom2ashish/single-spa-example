@@ -1,8 +1,4 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { registerApplication, start } from 'single-spa';
-import { navigateToUrl } from 'single-spa';
-import { getSingleSpaExtraProviders } from 'single-spa-angular';
-import { AppModule } from './app/app.module';
+import { navigateToUrl, registerApplication, start } from 'single-spa';
 
 window.navigate = function (url: string) {
   navigateToUrl(url);
@@ -25,13 +21,29 @@ function loadScript(appName: string, url: string) {
   });
 }
 
-window.addEventListener('beforeunload', () => {
-  debugger;
-})
+function loadStylesheets(appName: string, url: string) {
+  return new Promise((resolve, reject) => {
+    if (document.getElementById(appName)) {
+      return resolve(true);
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    link.id = appName;
+    link.onload = resolve;
+    link.onerror = reject;
+
+    document.head.appendChild(link);
+  });
+}
 
 registerApplication({
-  name: 'app1',
-  app: () => loadScript('vanillajs-app-main', 'http://localhost:4201/main.js').then(() => {
+  name: 'vanillaJsApp',
+  app: () => Promise.all([
+    loadStylesheets('vanillajs-app-styles', 'http://localhost:4201/styles.css'),
+    loadScript('vanillajs-app-main', 'http://localhost:4201/main.js')
+  ]).then(() => {
     return window['vanillaJsApp'];
   }),
   activeWhen: (location) => {
@@ -40,15 +52,13 @@ registerApplication({
 });
 
 registerApplication({
-  name: 'app2',
+  name: 'angularApp',
   app: () => import('../../angular-app/src/main'),
   activeWhen: '/app2',
 });
 
 start();
 
-platformBrowserDynamic(getSingleSpaExtraProviders()).bootstrapModule(AppModule).then(() => {
-  console.log('Angular Shell application bootstraped');
+import('./app/bootstrap').then((bootstrap) => {
+  bootstrap.bootstrap();
 });
-
-
